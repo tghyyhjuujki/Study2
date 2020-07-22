@@ -81,4 +81,4 @@ $ git push heroku master
 
 그리고 본인 heroku 주소로 들어가면 배포가 잘 된 것을 확인할 수 있다
 
-![image-20200706092309632](200703 클라우드 1장.assets/image-20200706092309632.png)
+![image-20200706092309632](images/image-20200706092309632.png)

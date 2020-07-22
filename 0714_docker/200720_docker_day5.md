@@ -259,6 +259,35 @@ $ tree
 
 ![image-20200720170750826](images/image-20200720170750826.png)
 
+todo-mysql.yml파일을 바꿔준다
+
+```yml
+todo-mysql.yml
+version: "3"
+
+services:
+  master:
+    image: registry:5000/ch04/tododb:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role != manager]
+    environment:
+      MYSQL_ROOT_PASSWORD: gihyo 
+      MYSQL_DATABASE: tododb 
+      MYSQL_USER: gihyo 
+      MYSQL_PASSWORD: gihyo 
+      MYSQL_MASTER: "true"
+    networks:
+      - todoapp
+
+networks:
+  todoapp:
+    external: true
+```
+
+빌드 및 푸시
+
 ```sh
 $ docker build -t tododb .
 $ docker push manager:5000/example/tododb
@@ -272,6 +301,112 @@ $ docker service logs [컨테이너ID] # 오류로그 확인
 todo-mysql_master.1.e6aoqpodxskl@node3    | !! exec: "add-server-id.sh": executable file not found in $PATH # 파일을 찾을 수 없다고 뜸
 
 >> 이미지를 직접 실행시켜보자
+
+# 역시 에러가 발생한다. Dockerfile의 entryPoint 부분을 주석으로 막고 다시 빌드
+$ docker build --no-cache -t tododb . # --no-cache는 캐시 삭제, 즉 이전 빌드에서 생성된 캐시를 사용하지 않음. Docker는 이미지 생성 시간을 줄이기 위해서 Dockerfile의 각 과정을 캐시하는데, 이 캐시를 사용하지 않고 처음부터 다시 이미지를 생성.
+
+$ docker tag tododb manager:5000/example/tododb # 태그 붙이고
+$ docker push manager:5000/example/tododb # 레지에 푸시
+
+# 또 에러발생하면 로그 확인하고 mysqld.conf 맨 밑에 다음 내용 추가
+server-id=1
+
+# 다시 위 build 명령어 실행하고 run
+$ docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true manager:5000/example/tododb
 ```
 
-Dockerfile에 가서
+
+
+그럼 또 에러뜸
+
+![image-20200722102200635](images/image-20200722102200635.png)
+
+마스터를 찾을 수 없다고 뜬다. prepare.sh 파일에 나타나있는 것처럼
+
+![image-20200722102317686](images/image-20200722102317686.png)
+
+MYSQL_MASTER를 true로 바꿔줘야 한다
+
+```sh
+$ docker run -d -p 3306:3306 -e MYSQL_MASTER=true -e MYSQL_ALLOW_EMPTY_PASSWORD=true manager:5000/example/tododb
+```
+
+이제 mysql이 올라가긴했다 그럼 뭐가 문제였을까?
+
+다음 도커파일 내용을 보자
+
+![image-20200722103345730](images/image-20200722103345730.png)
+
+먼저 add-server-id.sh가 복사되는 파일 경로를 살펴보자
+
+```sh
+$ docker exec -it [mysql 컨테이너 ID] bash # mysql 배시 접속
+root@b53f452df94a:/usr/local/bin$ ls -l # add-server-id.sh 파일을 확인해보면
+```
+
+![image-20200722103659491](images/image-20200722103659491.png)
+
+![image-20200722103751560](images/image-20200722103751560.png)
+
+다음과 같이 권한이 없는 것을 알 수 있다
+
+마찬가지로 다른 파일들 역시 권한이 없을 것이다.  다시 manager로 돌아와서 권한 추가해주자
+
+```sh
+$ chmod +x add-server-id.sh
+$ chmod +x init-data.sh 
+$ chmod +x prepare.sh
+```
+
+그리고 mysql 실행을 위해 임의로 설정했던 서버id를 해제한다
+
+```sh
+mysqld.conf에서
+#servser-id=1 주석처리한다
+
+Dockerfile
+# entrypoint부분 주석처리 모두 해제해준다
+```
+
+todo-mysql.yml에 슬레이브 추가해준다
+
+```yml
+# master랑 들여쓰기 맞춰야함!!
+  slave:
+    image: manager:5000/example/tododb:latest
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role != manager]
+    depends_on:
+      - master
+    environment:
+      MYSQL_MASTER_HOST: master
+      MYSQL_ROOT_PASSWORD: gihyo 
+      MYSQL_DATABASE: tododb 
+      MYSQL_USER: gihyo 
+      MYSQL_PASSWORD: gihyo 
+      MYSQL_ROOT_PASSWORD: gihyo 
+      MYSQL_REPL_USER: repl 
+      MYSQL_REPL_PASSWORD: gihyo 
+    networks:
+      - todoapp
+```
+
+다시 빌드하고 푸시해준다. 그리고 마스터 노드 찾아내 접속
+
+```sh
+$ docker exec -it [컨테이너ID] bash
+root@296f74136813:/$ init-data.sh # 불러올 테이블 실행
+root@296f74136813:/$ mysql -uroot -p # 비밀번호 gihyo
+```
+
+이제 tododb라는 테이블이 마스터노드 뿐만 아니라 슬레이브에서도 보이는 것을 확인할 수 있다(연동됨)
+
+- 마스터
+
+![image-20200722132012558](images/image-20200722132012558.png)
+
+- 슬레이브
+
+![image-20200722132012558](images/image-20200722132012558.png)
