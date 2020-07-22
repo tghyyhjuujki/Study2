@@ -121,7 +121,7 @@ networks:
 
 현재 갖고있는 파일 및 폴더
 
-![image-20200720113753500](images/image-20200720113753500.png)
+![image-20200720113753500](200720_docker_day5.assets/image-20200720113753500.png)
 
 이미지 생성, 레지스트리 등록
 
@@ -139,7 +139,7 @@ $ docker stack deploy -c ch03-webapi-stack.yml simple-web
 
 스택이름(simple-web) + 이름(nginx, api)으로 서비스가 만들어지는 것을 확인할 수 있다
 
-![image-20200720113005083](images/image-20200720113005083.png)
+![image-20200720113005083](200720_docker_day5.assets/image-20200720113005083.png)
 
 ```sh
 $ docker stack ls # 서비스 목록 보기
@@ -257,7 +257,7 @@ $ tree
 
 이제 깃에서 받은 tododb 디렉토리 밑의 내용을 모두 복사한다
 
-![image-20200720170750826](images/image-20200720170750826.png)
+![image-20200720170750826](200720_docker_day5.assets/image-20200720170750826.png)
 
 todo-mysql.yml파일을 바꿔준다
 
@@ -319,11 +319,11 @@ $ docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true manager:5000/exa
 
 그럼 또 에러뜸
 
-![image-20200722102200635](images/image-20200722102200635.png)
+![image-20200722102200635](200720_docker_day5.assets/image-20200722102200635.png)
 
 마스터를 찾을 수 없다고 뜬다. prepare.sh 파일에 나타나있는 것처럼
 
-![image-20200722102317686](images/image-20200722102317686.png)
+![image-20200722102317686](200720_docker_day5.assets/image-20200722102317686.png)
 
 MYSQL_MASTER를 true로 바꿔줘야 한다
 
@@ -335,7 +335,7 @@ $ docker run -d -p 3306:3306 -e MYSQL_MASTER=true -e MYSQL_ALLOW_EMPTY_PASSWORD=
 
 다음 도커파일 내용을 보자
 
-![image-20200722103345730](images/image-20200722103345730.png)
+![image-20200722103345730](200720_docker_day5.assets/image-20200722103345730.png)
 
 먼저 add-server-id.sh가 복사되는 파일 경로를 살펴보자
 
@@ -344,9 +344,9 @@ $ docker exec -it [mysql 컨테이너 ID] bash # mysql 배시 접속
 root@b53f452df94a:/usr/local/bin$ ls -l # add-server-id.sh 파일을 확인해보면
 ```
 
-![image-20200722103659491](images/image-20200722103659491.png)
+![image-20200722103659491](200720_docker_day5.assets/image-20200722103659491.png)
 
-![image-20200722103751560](images/image-20200722103751560.png)
+![image-20200722103751560](200720_docker_day5.assets/image-20200722103751560.png)
 
 다음과 같이 권한이 없는 것을 알 수 있다
 
@@ -405,8 +405,8 @@ root@296f74136813:/$ mysql -uroot -p # 비밀번호 gihyo
 
 - 마스터
 
-![image-20200722132012558](images/image-20200722132012558.png)
+![image-20200722132012558](200720_docker_day5.assets/image-20200722132012558.png)
 
 - 슬레이브
 
-![image-20200722132012558](images/image-20200722132012558.png)
+![image-20200722132012558](200720_docker_day5.assets/image-20200722132012558.png)
