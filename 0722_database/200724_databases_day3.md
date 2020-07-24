@@ -214,6 +214,6 @@ and salary >(
 
 # Database Programming
 
-insert, update, delete 는 숫자값이 리턴
+비식별관계 : 부모의 키가 일반 속성으로 포함되는 관계
 
-반면 select는 결과집합이 리턴된다.
+식별관계 :  부모의 키가 주 식별자로 포함되는 관계
