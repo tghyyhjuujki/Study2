@@ -14,7 +14,7 @@ DCL - 제어어(data control language) : grant revoke
 
 record = row = tuple = cadinallity
 
-![image-20200722145503180](200722 databases day1.assets/image-20200722145503180.png)
+![image-20200722145503180](200722_databases_day1.assets/image-20200722145503180.png)
 
 <br/>
 
@@ -28,9 +28,9 @@ select 컬럼 from 테이블 where 조건
 
 M:N관계는 보통 만들지 않고 둘을 쪼개서 1:M , 1:N으로 만든다
 
-![image-20200722145058369](200722 databases day1.assets/image-20200722145058369.png)
+![image-20200722145058369](200722_databases_day1.assets/image-20200722145058369.png)
 
-![image-20200722163620923](200722 databases day1.assets/image-20200722163620923.png)
+![image-20200722163620923](200722_databases_day1.assets/image-20200722163620923.png)
 
 ---
 
@@ -64,13 +64,13 @@ $ mysql -h192.168.56.12 -ugihyo -p
 
 # 시험문제 pdf2 28page
 
-![image-20200722164554155](200722 databases day1.assets/image-20200722164554155.png)
+![image-20200722164554155](200722_databases_day1.assets/image-20200722164554155.png)
 
 
 
 외부조인(p.56) : 주문하지 않은 장미란 데이터도 가져올 수 있다
 
-![image-20200722172349249](200722 databases day1.assets/image-20200722172349249.png)
+![image-20200722172349249](200722_databases_day1.assets/image-20200722172349249.png)
 
 현재 왼쪽 다 표시(left join)
 
@@ -86,7 +86,7 @@ select distinct publisher from Book; # disticnt는 중복 제거
 
 ## where
 
-![image-20200723095304019](200722 databases day1.assets/image-20200723095304019.png)
+![image-20200723095304019](200722_databases_day1.assets/image-20200723095304019.png)
 
 ```mysql
 select * from Book where price<20000; # 가격 20000 아래 모두
@@ -301,7 +301,7 @@ update Book set publisher=(select publisher from Imported_Book where bookid=21) 
 delete from Book where bookid=11; # 11번 삭제
 ```
 
-![image-20200723155324563](200722 databases day1.assets/image-20200723155324563.png)
+![image-20200723155324563](200722_databases_day1.assets/image-20200723155324563.png)
 
 ---
 

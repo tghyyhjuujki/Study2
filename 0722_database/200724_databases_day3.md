@@ -95,13 +95,13 @@ as
 select * from Book where bookname like '축구%';
 ```
 
-![image-20200724113540315](200724 databases day3.assets/image-20200724113540315.png)
+![image-20200724113540315](200724_databases_day3.assets/image-20200724113540315.png)
 
 ```mysql
 select * from vBook;
 ```
 
-![image-20200724113624229](200724 databases day3.assets/image-20200724113624229.png)
+![image-20200724113624229](200724_databases_day3.assets/image-20200724113624229.png)
 
 <br/>
 
@@ -115,7 +115,7 @@ from Orders o, Customer c, Book b
 where o.custid=c.custid and o.bookid=b.bookid;
 ```
 
-![image-20200724114219220](200724 databases day3.assets/image-20200724114219220.png)
+![image-20200724114219220](200724_databases_day3.assets/image-20200724114219220.png)
 
 <br/>
 
@@ -150,3 +150,70 @@ group by c.custid;
 drop view [뷰 이름]; # 뷰 삭제, 원본 테이블은 삭제 안 된다
 ```
 
+---
+
+### [도서 데이터베이스]
+
+```mysql
+# 1. 판매가격이 20,000원인 도서의 도서번호, 도서이름, 고객이름, 출판사, 판매가격을 보여주 는 highorders 뷰를 생성하시오.
+create view highorders
+as
+select * from Book where price>=20000;
+
+# 2. highorders 뷰를 변경하고자 한다. 판매가격 속성을 삭제하는 명령을 수행하시오. 삭제 후 (2)번 SQL 문을 다시 수행하시오.
+create or replace view highorders(bookid, bookname, publisher)
+as
+select bookid, bookname, publisher from Book
+where price >=20000;
+
+
+```
+
+
+
+### [사원 데이터베이스]
+
+```mysql
+# 3. 팀장(MGR)이 없는 직원의 이름을 보이시오.
+select concat(first_name, ' ', last_name) 
+from employees where manager_id is null;
+
+# 4. 사원의 이름과 부서의 이름을 보이시오(조인/스칼라 부속질의 사용).
+- 조인
+- 스칼라 부속질의
+select concat(first_name, ' ', last_name), d.department_name 
+from employees e, departments d
+where e.department_id=d.department_id;
+
+# 5. ‘Seattle’에 근무하는 사원의 이름을 보이시오
+- 조인, 인라인 뷰, 중첩질의, EXISTS
+select first_name from employees e, departments d
+where e.department_id=d.department_id
+and location_id=(
+	select location_id
+    from locations
+    where city like 'Seattle');
+
+# 6. 평균보다 급여가 많은 직원의 이름을 보이시오.
+select concat(first_name, ' ', last_name) from employees 
+where salary > (select avg(salary) from employees);
+
+# 7. 자기 부서의 평균보다 급여가 많은 직원의 이름을 보이시오(상관 부속질의 사용). 
+select concat(first_name, ' ', last_name) from employees e, departments d
+where e.department_id=d.department_id 
+and salary >(
+	select avg(salary) 
+	from employees 
+	where department_id=e.department_id
+);
+```
+
+
+
+---
+
+# Database Programming
+
+insert, update, delete 는 숫자값이 리턴
+
+반면 select는 결과집합이 리턴된다.
