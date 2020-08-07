@@ -145,7 +145,7 @@ systemctl enable --now docker && systemctl start docker
 ## 5-1. Docker compose 설치
 
 ```
-url -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose -version 
@@ -232,13 +232,13 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubetm/kubetm.github.io/mas
 - Proxy 설정
 
 ```
-$ nohup kubectl proxy --port=8001 --address=192.168.56.10 --accept-hosts='^*$' >/dev/null 2>&1 &
+$ nohup kubectl proxy --port=8000 --address=192.168.56.14 --accept-hosts='^*$' >/dev/null 2>&1 &
 ```
 
 - 접속
 
 ```
-http://192.168.56.10:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+http://192.168.56.14:8000/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
 ## 10. 테스트
