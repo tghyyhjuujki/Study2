@@ -73,3 +73,25 @@
 ---
 
 ### backup server
+
+![image-20200817110505133](200814_azure_project.assets/image-20200817110505133.png)
+
+백업할 디렉토리 선택
+
+![image-20200817112913595](200814_azure_project.assets/image-20200817112913595.png)
+
+인스턴스 내부에 백업 된 것 확인
+
+![image-20200817114125140](200814_azure_project.assets/image-20200817114125140.png)
+
+백업 디렉토리 FTP 생성
+
+![image-20200817113131472](200814_azure_project.assets/image-20200817113131472.png)
+
+내부에 백업된 것 확인
+
+![image-20200817114244230](200814_azure_project.assets/image-20200817114244230.png)
+
+외부에서 확인
+
+![image-20200817114157751](200814_azure_project.assets/image-20200817114157751.png)
